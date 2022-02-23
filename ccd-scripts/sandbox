@@ -1,0 +1,37 @@
+set -eo pipefail
+
+TEMPLATE=$3
+DIR=$4
+
+TEMPLATE_REPO=$(eval echo '$CCD_TEMPLATE_REPO_'$TEMPLATE)
+
+function show_usage () {
+  echo "$0 [TEMPLATE] [DIR]"
+}
+
+if [ ! "${TEMPLATE:+error}" ]; then
+  echo "Please specify template."
+  show_usage
+  exit 1
+fi
+
+if [ ! "${DIR:+error}" ]; then
+  echo "Please specify directory."
+  show_usage
+  exit 1
+fi
+
+if [ -e "$DIR" ]; then
+  echo "The specified directory $DIR already exists."
+  exit 1
+fi
+
+if [ ! "${TEMPLATE_REPO:+error}" ]; then
+  echo "No such configured template repository \"$TEMPLATE\"."
+  echo "You may want to add new template configuration by edit ccd file."
+  exit 1
+fi
+
+git clone "$TEMPLATE_REPO" "$DIR"
+
+rm -rf "$DIR/.git"

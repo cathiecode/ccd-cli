@@ -1,0 +1,15 @@
+set -eo pipefail
+
+DEST=$3
+
+if [ ! -e $DEST ]; then
+  echo "\"$DEST\" is not found"
+  exit 1
+fi
+
+if [ ! -d $DEST ]; then
+  echo "\"$DEST\" is not directory"
+  exit 1
+fi
+
+ln -s "$0" "$DEST/ccd"

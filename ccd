@@ -1,0 +1,18 @@
+#!/bin/sh
+
+set -eo pipefail
+
+# CONFIGURATION
+export CCD_TEMPLATE_REPO_node="https://github.com/cathiecode/cathiecode-node"
+
+if [ ! ${1:+error} ]; then
+  echo "Please specify subcommand."
+  echo "Usage: ccd <subcommand> [...]"
+  echo -n "Available subcommand(s): "
+  ls $(dirname $0)/ccd-scripts/
+  exit 1
+fi
+
+echo "$@" | cut -d ' ' -f 1-
+
+exec $(readlink -f $(dirname $0))/ccd-scripts/$1 echo "$@"
