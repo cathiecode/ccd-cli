@@ -6,7 +6,7 @@ DIR=$4
 TEMPLATE_REPO=$(eval echo '$CUS_TEMPLATE_REPO_'$TEMPLATE)
 
 function show_usage () {
-  echo "$0 [TEMPLATE] [DIR]"
+  echo "cus sandbox [TEMPLATE] [DIR]"
 }
 
 if [ ! "${TEMPLATE:+error}" ]; then
