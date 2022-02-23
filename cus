@@ -5,14 +5,16 @@ set -eo pipefail
 # CONFIGURATION
 export CUS_TEMPLATE_REPO_node="https://github.com/cathiecode/cathiecode-node"
 
+export CUS_ENTRYPOINT=$(readlink -f $0)
+
 if [ ! ${1:+error} ]; then
   echo "Please specify subcommand."
   echo "Usage: cus <subcommand> [...]"
-  echo -n "Available subcommand(s): "
-  ls $(dirname $0)/cus-scripts/
+  echo "Available subcommand(s):"
+  ls -p $(dirname $(readlink -f $0))/cus-scripts/ | grep -v /
   exit 1
 fi
 
 echo "$@" | cut -d ' ' -f 1-
 
-exec $(readlink -f $(dirname $0))/cus-scripts/$1 echo "$@"
+exec $(dirname $(readlink -f $0))/cus-scripts/$1 echo "$@"

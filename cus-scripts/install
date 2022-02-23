@@ -2,6 +2,12 @@ set -eo pipefail
 
 DEST=$3
 
+if [ ! ${DEST:+error} ]; then
+  echo "Please specify directory to install cus."
+  echo "Usage: cus install <dest>"
+  exit 1
+fi
+
 if [ ! -e $DEST ]; then
   echo "\"$DEST\" is not found"
   exit 1
@@ -12,4 +18,4 @@ if [ ! -d $DEST ]; then
   exit 1
 fi
 
-ln -s "$0" "$DEST/cus"
+ln -s "$CUS_ENTRYPOINT" "$DEST/cus"
