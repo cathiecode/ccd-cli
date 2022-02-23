@@ -1,0 +1,8 @@
+mkdir -p /tmp/ccd-run-java
+
+FILENAME=$(basename $1)
+FILENAME_WITHOUT_SUFFIX=${FILENAME%.*}
+
+javac -d /tmp/ccd-run-java $1
+
+java -classpath /tmp/ccd-run-java $FILENAME_WITHOUT_SUFFIX

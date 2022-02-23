@@ -1,0 +1,5 @@
+#!/bin/sh
+
+g++ -o /tmp/cus-run-c-executable $1
+
+exec /tmp/cus-run-c-executable

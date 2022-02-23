@@ -1,0 +1,29 @@
+set -eo pipefail
+
+TARGET=$3
+
+function show_usage () {
+  echo "Usage: cus run <Some program file>"
+}
+
+if [ ! ${TARGET:+error} ]; then
+  echo "Please specify target file."
+  show_usage
+  exit 1
+fi
+
+if [ ! -e $TARGET ]; then
+  echo "\"$TARGET\" does not exists."
+  exit 1
+fi
+
+SUFFIX=${TARGET##*.}
+
+RUNNER=$(dirname $CUS_ENTRYPOINT)/cus-scripts/run-scripts/$SUFFIX
+
+if [ ! -e $RUNNER ]; then
+  echo "Runner for $SUFFIX file does not exists."
+  exit 1
+fi
+
+exec $RUNNER $TARGET
