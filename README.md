@@ -1,14 +1,14 @@
-# `ccd`: cathiecode's useless scripts
+# `cus`: Cathiecode's Useless Scripts
 
 ## Install
 ```
 $ cd ~/.local
-$ git clone https://github.com/cathiecode/ccd-cli
-$ ccd-cli/ccd install ~/.local/bin/
+$ git clone https://github.com/cathiecode/cus-cli
+$ cus-cli/cus install ~/.local/bin/
 ```
 
 ## Usage
 ```
-$ ccd # Prints help
-$ ccd <subcommand> [...args]
+$ cus # Prints help
+$ cus <subcommand> [...args]
 ```

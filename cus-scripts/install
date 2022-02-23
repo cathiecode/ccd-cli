@@ -12,4 +12,4 @@ if [ ! -d $DEST ]; then
   exit 1
 fi
 
-ln -s "$0" "$DEST/ccd"
+ln -s "$0" "$DEST/cus"

@@ -3,7 +3,7 @@ set -eo pipefail
 TEMPLATE=$3
 DIR=$4
 
-TEMPLATE_REPO=$(eval echo '$CCD_TEMPLATE_REPO_'$TEMPLATE)
+TEMPLATE_REPO=$(eval echo '$CUS_TEMPLATE_REPO_'$TEMPLATE)
 
 function show_usage () {
   echo "$0 [TEMPLATE] [DIR]"
@@ -28,7 +28,7 @@ fi
 
 if [ ! "${TEMPLATE_REPO:+error}" ]; then
   echo "No such configured template repository \"$TEMPLATE\"."
-  echo "You may want to add new template configuration by edit ccd file."
+  echo "You may want to add new template configuration by edit cus file."
   exit 1
 fi
 
