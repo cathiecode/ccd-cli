@@ -15,6 +15,4 @@ if [ ! ${1:+error} ]; then
   exit 1
 fi
 
-echo "$@" | cut -d ' ' -f 1-
-
 exec $(dirname $(readlink -f $0))/cus-scripts/$1 echo "$@"
