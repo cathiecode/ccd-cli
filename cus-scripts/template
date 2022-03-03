@@ -1,0 +1,30 @@
+set -eo pipefail
+
+TEMPLATE=$3
+NAME=$4
+DIR=${5:-"."}
+
+function show_usage () {
+  echo "Usage: cus template <template> <name> <dir>"
+  echo "Available template(s):"
+  ls $(dirname $CUS_ENTRYPOINT)/cus-scripts/template-templates
+}
+
+if [ ! ${TEMPLATE:+error} ]; then
+  echo "Please specify template."
+  show_usage
+  exit 1
+fi
+
+if [ ! ${NAME:+error} ]; then
+  echo "Please specify name."
+  show_usage
+  exit 1
+fi
+
+
+SRC=$(dirname $CUS_ENTRYPOINT)/cus-scripts/template-templates/$TEMPLATE
+DEST=$DIR/$NAME
+
+cp -rT "$SRC" "$DEST"
+sed -i "s/#NAME/$NAME/g" $DEST/*
