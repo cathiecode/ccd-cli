@@ -1,0 +1,58 @@
+set -eo pipefail
+
+TARGET=$3
+
+function show_usage () {
+  echo "Usage: cus demand <Demand file>"
+}
+
+if [ ! ${TARGET:+error} ]; then
+  echo "Please specify command to find."
+  show_usage
+  exit 1
+fi
+
+if [ "$(command -v pacman)" == "" ]; then
+  echo "Can't find pacman; This script works only in ArchLinux."
+  exit 1
+fi
+
+echo "Searching package contains \"$TARGET\"..."
+
+RESULT="$(pacman -Fq $TARGET)"
+
+i=1;
+declare -A PACKAGE
+for line in $RESULT; do
+  echo "[$i]: $line"
+  PACKAGE[$i]=$line
+  let i++
+done
+
+while true; do
+  read -p "type package number to install: " PACKAGE_TO_INSTALL_NUMBER
+
+  if [[ ! "$PACKAGE_TO_INSTALL_NUMBER" =~ ^[0-9]+$ ]]; then
+    echo "got $PACKAGE_TO_INSTALL_NUMBER"
+    echo "Please specify number."
+    continue
+  fi
+
+  if [ $PACKAGE_TO_INSTALL_NUMBER -lt $i ]; then
+    break;
+  fi
+
+  echo "$PACKAGE_TO_INSTALL_NUMBER is invalid."
+done
+
+
+PACKAGE_TO_INSTALL=${PACKAGE[$PACKAGE_TO_INSTALL_NUMBER]}
+
+echo "Installing \"$PACKAGE_TO_INSTALL\"..."
+
+if [ "$(command -v sudo)" == "" ]; then
+  echo "There's no sudo; please install \"$PACKAGE_TO_INSTALL\" manually."
+  exit 1
+fi
+
+sudo pacman -S "$PACKAGE_TO_INSTALL"
