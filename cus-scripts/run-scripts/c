@@ -1,5 +1,3 @@
 #!/bin/sh
 
-g++ -Wall -g -O0 -o /tmp/cus-run-c-executable $1
-
-exec /tmp/cus-run-c-executable
+g++ -Wall -g -O0 -o /tmp/cus-run-c-executable $1 && exec /tmp/cus-run-c-executable
