@@ -1,0 +1,17 @@
+#!/bin/bash
+
+prohibited_branches="(master|develop|main)"
+
+while read local_ref local_sha remote_ref remote_sha
+do
+    if [[ "$remote_ref" =~ ^.*/$prohibited_branches$ ]]; then
+        cat <<-EOS
+        --------------------------------------------------
+
+        DO NOT PUSH TO $remote_ref DIRECTLY!
+
+        --------------------------------------------------
+EOS
+        exit 1
+    fi
+done

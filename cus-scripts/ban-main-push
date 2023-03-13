@@ -1,0 +1,13 @@
+set -eo pipefail
+
+DEST=$(git rev-parse --show-superproject-working-tree --show-toplevel | head -1)
+
+cp $DEST/.git/hooks/pre-push $DEST/.git/hooks/pre-push.bak
+
+cat "$(dirname CUS_ENTRYPOINT)/cus-scripts/data/ban-push-main-script" >> $DEST/.git/hooks/pre-push
+
+chmod +x $DEST/.git/hooks/pre-push
+
+echo "--- current pre-push hook ---"
+
+cat $DEST/.git/hooks/pre-push
