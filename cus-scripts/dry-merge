@@ -1,0 +1,56 @@
+#!/bin/bash
+
+if [ $# -lt 3 ]
+then
+  echo "Usage: cus dry-merge <branch1> ... <branchN>"
+  echo "Please provide at least one branch name starting from the third argument"
+  exit 1
+fi
+
+CURRENT_BRANCH=$(git branch --show-current)
+if [ $? -ne 0 ]
+then
+  echo "Error getting the current branch."
+  exit 1
+fi
+
+# Shift the first two arguments
+shift 2
+
+# Create a temporary branch
+TEMP_BRANCH="temp_branch_$(date +%s)"
+git checkout -b "$TEMP_BRANCH" "$CURRENT_BRANCH"
+if [ $? -ne 0 ]
+then
+  echo "Error creating temporary branch."
+  exit 1
+fi
+
+# Loop over all remaining arguments
+for BRANCH_TO_MERGE in "$@"
+do
+  # Try to merge the branch
+  git merge --no-commit --no-ff "$BRANCH_TO_MERGE"
+
+  if [ $? -ne 0 ]
+  then
+    echo -e "\e[31m# $BRANCH_TO_MERGE conflicts with $CURRENT_BRANCH\e[0m"
+    # Abort the merge and switch back to the current branch
+    git merge --abort
+    git checkout "$CURRENT_BRANCH"
+    git branch -D "$TEMP_BRANCH"
+    exit 1
+  else
+    echo -e "\e[32m# $BRANCH_TO_MERGE could be merged into $CURRENT_BRANCH\e[0m"
+    git commit -m "Temporary commit for dry merge ($BRANCH_TO_MERGE)"
+  fi
+done
+
+# If we reached this point, all merges were successful. Now rollback.
+git checkout "$CURRENT_BRANCH"
+git branch -D "$TEMP_BRANCH"
+if [ $? -ne 0 ]
+then
+  echo "Error deleting temporary branch."
+  exit 1
+fi
