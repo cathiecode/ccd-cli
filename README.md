@@ -3,7 +3,7 @@
 ## Install
 ```
 $ cd ~/.local
-$ git clone https://github.com/cathiecode/cus-cli
+$ git clone https://github.com/cathiecode/cus
 $ cus-cli/cus install ~/.local/bin/
 ```
 
@@ -11,4 +11,10 @@ $ cus-cli/cus install ~/.local/bin/
 ```
 $ cus # Prints help
 $ cus <subcommand> [...args]
+```
+
+## Uninstall
+```
+$ rm ~/.local/cus-cli
+$ rm ~/.local/bin/cus
 ```
