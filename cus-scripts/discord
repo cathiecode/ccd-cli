@@ -20,4 +20,4 @@ if [ ! "${CONTENT:+error}" ]; then
 fi
 
 
-wget --method=POST --header="Content-Type: application/json" --body-data="{\"content\": \"$CONTENT\"}" "$URL"
+wget --quiet --output-file=/dev/null --method=POST --header="Content-Type: application/json" --body-data="{\"content\": \"$CONTENT\"}" "$URL"
